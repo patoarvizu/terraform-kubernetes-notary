@@ -1,0 +1,16 @@
+    {
+      "server": {
+        "grpc_addr": ":${signer_port}",
+        "tls_cert_file": "/tls/notary-signer.crt",
+        "tls_key_file": "/tls/notary-signer.key",
+        "client_ca_file": "/tls/root-ca.crt"
+      },
+      "logging": {
+        "level": "{logging_level}"
+      },
+      "storage": {
+        "backend": "${storage_flavor}",
+        "db_url": "${signer_storage_db_url}",
+        "default_alias": "${signer_default_alias}"
+      }
+    }
