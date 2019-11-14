@@ -58,6 +58,11 @@ variable "server_db_password" {
   default = "password123"
 }
 
+variable "server_image_version" {
+  type = string
+  default = "server-0.6.1-2"
+}
+
 variable "logging_level" {
   type = string
   default = "info"
@@ -95,7 +100,10 @@ variable "caching_consistent_metadata" {
 
 variable "gun_prefixes" {
   type = list(string)
-  default = ["example.com"]
+  default = [
+    "docker.io/",
+    "example.com/",
+  ]
 }
 
 variable "signer_port" {
@@ -116,4 +124,9 @@ variable "signer_default_alias" {
 variable "signer_db_password" {
   type = string
   default = "password123"
+}
+
+variable "cert_validity_period_hours"{
+  type = number
+  default = 8760
 }

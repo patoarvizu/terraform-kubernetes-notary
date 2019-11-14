@@ -1,7 +1,7 @@
 resource "kubernetes_config_map" "notarysql" {
   metadata {
     name = "notarysql"
-    namespace = "${var.namespace}"
+    namespace = var.namespace
   }
   data = {
     for f in fileset("${path.module}/sql/${var.storage_flavor}-initdb.d", "*"):
@@ -12,7 +12,7 @@ resource "kubernetes_config_map" "notarysql" {
 resource "kubernetes_config_map" "notary_migrations_server" {
   metadata {
     name = "notary-migrations-server"
-    namespace = "${var.namespace}"
+    namespace = var.namespace
   }
   data = {
     for f in fileset("${path.module}/migrations/server/${var.storage_flavor}", "*"):
@@ -23,7 +23,7 @@ resource "kubernetes_config_map" "notary_migrations_server" {
 resource "kubernetes_config_map" "notary_migrations_signer" {
   metadata {
     name = "notary-migrations-signer"
-    namespace = "${var.namespace}"
+    namespace = var.namespace
   }
   data = {
     for f in fileset("${path.module}/migrations/signer/${var.storage_flavor}", "*"):
@@ -34,7 +34,7 @@ resource "kubernetes_config_map" "notary_migrations_signer" {
 resource "kubernetes_config_map" "notary_config" {
   metadata {
     name = "notary-config"
-    namespace = "${var.namespace}"
+    namespace = var.namespace
   }
   data = {
     "server-config.json" = templatefile("${path.module}/templates/server-config.json.tmpl", {
@@ -66,7 +66,7 @@ resource "kubernetes_config_map" "notary_config" {
 resource "kubernetes_persistent_volume_claim" "notary_data" {
   metadata {
     name = "notary-data"
-    namespace = "${var.namespace}"
+    namespace = var.namespace
   }
   spec {
     storage_class_name = var.storage_class_name
@@ -85,7 +85,7 @@ resource "kubernetes_persistent_volume_claim" "notary_data" {
 resource "kubernetes_secret" "server_password" {
   metadata {
     name = "server-password"
-    namespace = "${var.namespace}"
+    namespace = var.namespace
   }
   data = {
     password = var.server_db_password
@@ -95,7 +95,7 @@ resource "kubernetes_secret" "server_password" {
 resource "kubernetes_secret" "signer_password" {
   metadata {
     name = "signer-password"
-    namespace = "${var.namespace}"
+    namespace = var.namespace
   }
   data = {
     password = var.signer_db_password
@@ -105,7 +105,7 @@ resource "kubernetes_secret" "signer_password" {
 resource "kubernetes_deployment" "notary_db" {
   metadata {
     name = "notary-db"
-    namespace = "${var.namespace}"
+    namespace = var.namespace
   }
   spec {
     replicas = 1
@@ -209,6 +209,164 @@ resource "kubernetes_deployment" "notary_db" {
         }
         volume {
           name = "sql-init"
+          empty_dir {
+            medium = ""
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "tls_private_key" "ca" {
+  algorithm = "ECDSA"
+}
+
+resource "tls_self_signed_cert" "ca" {
+  key_algorithm = tls_private_key.ca.algorithm
+  private_key_pem = tls_private_key.ca.private_key_pem
+  subject {
+    common_name = "Notary Root CA"
+  }
+  validity_period_hours = var.cert_validity_period_hours
+  allowed_uses = [
+    "cert_signing",
+    "key_encipherment",
+    "digital_signature",
+  ]
+  is_ca_certificate = true
+}
+
+resource "tls_private_key" "server" {
+  algorithm = "ECDSA"
+}
+
+resource "tls_cert_request" "server" {
+  key_algorithm = tls_private_key.server.algorithm
+  private_key_pem = tls_private_key.server.private_key_pem
+  subject {
+    common_name = "notary-server"
+  }
+  dns_names = ["notary-server"]
+}
+
+resource "tls_locally_signed_cert" "server" {
+  cert_request_pem = tls_cert_request.server.cert_request_pem
+  ca_key_algorithm = tls_private_key.ca.algorithm
+  ca_private_key_pem = tls_private_key.ca.private_key_pem
+  ca_cert_pem = tls_self_signed_cert.ca.cert_pem
+  validity_period_hours = var.cert_validity_period_hours
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+  ]
+  is_ca_certificate = false
+}
+
+resource "kubernetes_secret" "notary_tls" {
+  metadata {
+    name = "notary-tls"
+    namespace = var.namespace
+  }
+  data = {
+    "root-ca.crt" = tls_self_signed_cert.ca.cert_pem
+    "notary-server.crt" = tls_locally_signed_cert.server.cert_pem
+    "notary-server.key" = tls_private_key.server.private_key_pem
+  }
+}
+
+resource "kubernetes_deployment" "notary_server" {
+  metadata {
+    name = "notary-server"
+    namespace = var.namespace
+  }
+  spec {
+    replicas = var.server_replicas
+    selector {
+      match_labels = {
+        app = "notary"
+        component = "notary-server"
+      }
+    }
+    strategy {
+      rolling_update {
+        max_unavailable = 0
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          app = "notary"
+          component = "notary-server"
+        }
+      }
+      spec {
+        init_container {
+          command = [
+            "/gomplate",
+            "--left-delim",
+            "'%%'",
+            "--right-delim",
+            "'%%'",
+            "--input-dir",
+            "/config-template",
+            "--output-dir",
+            "/config",
+          ]
+          image = "hairyhenderson/gomplate:v3"
+          name = "gomplate"
+          env {
+            name = "PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.server_password.metadata.0.name
+                key = "password"
+              }
+            }
+          }
+          volume_mount {
+            mount_path = "/config"
+            name = "config-rendered"
+          }
+          volume_mount {
+            mount_path = "/config-template"
+            name = "config-template"
+          }
+        }
+        container {
+          command = [
+            "notary-server",
+            "-config=/config/server-config.json",
+          ]
+          image = "notary:${var.server_image_version}"
+          name = "server"
+          port {
+            container_port = var.server_port
+            name = "https"
+          }
+          volume_mount {
+            mount_path = "/config"
+            name = "config-rendered"
+          }
+          volume_mount {
+            mount_path = "/tls"
+            name = "tls"
+          }
+        }
+        volume {
+          name = "config-template"
+          config_map {
+            name = kubernetes_config_map.notary_config.metadata.0.name
+          }
+        }
+        volume {
+          name = "tls"
+          secret {
+            secret_name = kubernetes_secret.notary_tls.metadata.0.name
+          }
+        }
+        volume {
+          name = "config-rendered"
           empty_dir {
             medium = ""
           }
