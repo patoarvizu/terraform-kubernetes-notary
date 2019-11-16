@@ -64,6 +64,7 @@ resource "kubernetes_config_map" "notary_config" {
 }
 
 resource "kubernetes_persistent_volume_claim" "notary_data" {
+  for_each = var.deploy_persistence == true ? {create: true} : {}
   metadata {
     name = "notary-data"
     namespace = var.namespace
@@ -113,6 +114,7 @@ resource "kubernetes_secret" "signer_alias" {
 }
 
 resource "kubernetes_deployment" "notary_db" {
+  for_each = var.deploy_persistence == true ? {create: true} : {}
   metadata {
     name = "notary-db"
     namespace = var.namespace
@@ -229,6 +231,7 @@ resource "kubernetes_deployment" "notary_db" {
 }
 
 resource "kubernetes_service" "notary_db" {
+  for_each = var.deploy_persistence == true ? {create: true} : {}
   metadata {
     name = "notary-db"
     namespace = var.namespace

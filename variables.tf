@@ -3,6 +3,11 @@ variable "namespace" {
   default = "default"
 }
 
+variable "deploy_persistence" {
+  type = bool
+  default = true
+}
+
 variable "storage_flavor" {
   type = string
   default = "mysql"
