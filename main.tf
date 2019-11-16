@@ -210,7 +210,7 @@ resource "kubernetes_deployment" "notary_db" {
         volume {
           name = "notary-data"
           persistent_volume_claim {
-            claim_name = kubernetes_persistent_volume_claim.notary_data["create"].metadata.0.name
+            claim_name = kubernetes_persistent_volume_claim.notary_data[each.key].metadata.0.name
           }
         }
         volume {
