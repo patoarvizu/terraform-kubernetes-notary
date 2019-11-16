@@ -23,9 +23,14 @@ variable "storage_size" {
   default = "100Mi"
 }
 
+variable "migrate_version" {
+  type = string
+  default = "v4.6.2"
+}
+
 variable "server_port" {
   type = number
-  default = 443
+  default = 4443
 }
 
 variable "server_trust_type" {
@@ -121,12 +126,27 @@ variable "signer_default_alias" {
   default = "alias"
 }
 
+variable "signer_replicas" {
+  type = number
+  default = 3
+}
+
 variable "signer_db_password" {
   type = string
   default = "password123"
 }
 
-variable "cert_validity_period_hours"{
+variable "signer_image_version" {
+  type = string
+  default = "signer-0.6.1-2"
+}
+
+variable "cert_validity_period_hours" {
   type = number
   default = 8760
+}
+
+variable "signer_alias_passphrase" {
+  type = string
+  default = "password123"
 }
