@@ -89,7 +89,7 @@ resource "kubernetes_secret" "server_password" {
     namespace = var.namespace
   }
   data = {
-    password = var.server_db_password
+    password = data.aws_kms_secrets.secrets.plaintext["server_db_password"]
   }
 }
 
@@ -99,7 +99,7 @@ resource "kubernetes_secret" "signer_password" {
     namespace = var.namespace
   }
   data = {
-    password = var.signer_db_password
+    password = data.aws_kms_secrets.secrets.plaintext["signer_db_password"]
   }
 }
 
@@ -109,7 +109,7 @@ resource "kubernetes_secret" "signer_alias" {
     namespace = var.namespace
   }
   data = {
-    alias-secret = var.signer_alias_passphrase
+    alias-secret = data.aws_kms_secrets.secrets.plaintext["signer_alias_passphrase"]
   }
 }
 

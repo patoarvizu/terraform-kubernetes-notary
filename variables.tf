@@ -63,9 +63,9 @@ variable "server_replicas" {
   default = 3
 }
 
-variable "server_db_password" {
+variable "encrypted_server_db_password" {
   type = string
-  default = "password123"
+  default = "AQICAHg8OYyOJGgygXIY31R244WHNAV09UE7YNnNclSqHEf2UwG1w1nQ2oTgmYZW7XpufD78AAAAaTBnBgkqhkiG9w0BBwagWjBYAgEAMFMGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM3pPcRTF9iB/0Z589AgEQgCbumAkx42uQ/+RH0AYwAY5NQWZ0HNuxX5MhmRWNKVhu5hj//iHPNA=="
 }
 
 variable "server_image_version" {
@@ -136,9 +136,9 @@ variable "signer_replicas" {
   default = 3
 }
 
-variable "signer_db_password" {
+variable "encrypted_signer_db_password" {
   type = string
-  default = "password123"
+  default = "AQICAHg8OYyOJGgygXIY31R244WHNAV09UE7YNnNclSqHEf2UwG1w1nQ2oTgmYZW7XpufD78AAAAaTBnBgkqhkiG9w0BBwagWjBYAgEAMFMGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM3pPcRTF9iB/0Z589AgEQgCbumAkx42uQ/+RH0AYwAY5NQWZ0HNuxX5MhmRWNKVhu5hj//iHPNA=="
 }
 
 variable "signer_image_version" {
@@ -151,7 +151,7 @@ variable "cert_validity_period_hours" {
   default = 8760
 }
 
-variable "signer_alias_passphrase" {
+variable "encrypted_signer_alias_passphrase" {
   type = string
-  default = "password123"
+  default = "AQICAHg8OYyOJGgygXIY31R244WHNAV09UE7YNnNclSqHEf2UwG1w1nQ2oTgmYZW7XpufD78AAAAaTBnBgkqhkiG9w0BBwagWjBYAgEAMFMGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM3pPcRTF9iB/0Z589AgEQgCbumAkx42uQ/+RH0AYwAY5NQWZ0HNuxX5MhmRWNKVhu5hj//iHPNA=="
 }
