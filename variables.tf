@@ -146,11 +146,6 @@ variable "signer_image_version" {
   default = "signer-0.6.1-2"
 }
 
-variable "cert_validity_period_hours" {
-  type = number
-  default = 8760
-}
-
 variable "encrypted_signer_alias_passphrase" {
   type = string
   default = "AQICAHg8OYyOJGgygXIY31R244WHNAV09UE7YNnNclSqHEf2UwG1w1nQ2oTgmYZW7XpufD78AAAAaTBnBgkqhkiG9w0BBwagWjBYAgEAMFMGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM3pPcRTF9iB/0Z589AgEQgCbumAkx42uQ/+RH0AYwAY5NQWZ0HNuxX5MhmRWNKVhu5hj//iHPNA=="

@@ -34,10 +34,10 @@ resource "kubernetes_secret" "notary_tls" {
     namespace = var.namespace
   }
   data = {
-    "root-ca.crt" = tls_self_signed_cert.ca.cert_pem
-    "notary-server.crt" = tls_locally_signed_cert.server.cert_pem
-    "notary-server.key" = tls_private_key.server.private_key_pem
-    "notary-signer.crt" = tls_locally_signed_cert.signer.cert_pem
-    "notary-signer.key" = tls_private_key.signer.private_key_pem
+    "root-ca.crt" = module.tls.ca_cert_pem
+    "notary-server.crt" = module.tls.server_cert_pem
+    "notary-server.key" = module.tls.server_cert_key
+    "notary-signer.crt" = module.tls.signer_cert_pem
+    "notary-signer.key" = module.tls.signer_cert_key
   }
 }
