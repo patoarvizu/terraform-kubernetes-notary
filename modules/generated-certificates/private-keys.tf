@@ -1,11 +1,11 @@
 resource "tls_private_key" "ca" {
-  algorithm = "ECDSA"
+  algorithm = var.private_key_algorithm
 }
 
 resource "tls_private_key" "server" {
-  algorithm = "ECDSA"
+  algorithm = var.private_key_algorithm
 }
 
 resource "tls_private_key" "signer" {
-  algorithm = "ECDSA"
+  algorithm = var.private_key_algorithm
 }
