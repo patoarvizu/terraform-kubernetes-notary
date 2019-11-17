@@ -17,3 +17,8 @@ variable "rsa_bits" {
   type = number
   default = null
 }
+
+variable "ca_cert_key" {
+  type = string
+  default = null
+}

@@ -1,6 +1,6 @@
 resource "tls_self_signed_cert" "ca" {
-  key_algorithm = tls_private_key.ca.algorithm
-  private_key_pem = tls_private_key.ca.private_key_pem
+  key_algorithm = var.private_key_algorithm
+  private_key_pem = var.ca_cert_key == null ? tls_private_key.ca.private_key_pem : var.ca_cert_key
   subject {
     common_name = "Notary Root CA"
   }

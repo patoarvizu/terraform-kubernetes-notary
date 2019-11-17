@@ -1,3 +1,4 @@
+# If the 'ca_cert_key' variable is set, then this resource is generated but not used
 resource "tls_private_key" "ca" {
   algorithm = var.private_key_algorithm
   ecdsa_curve = var.ecdsa_curve
