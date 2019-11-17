@@ -12,6 +12,13 @@ variable "encrypted_signer_alias_passphrase" {
   type = string
 }
 
+# -- Default null
+
+variable "storage_class_name" {
+  type = string
+  default = null
+}
+
 # --- Optional
 
 variable "namespace" {
@@ -32,11 +39,6 @@ variable "storage_flavor" {
 variable "storage_image" {
   type = string
   default = "mariadb:10.1.28"
-}
-
-variable "storage_class_name" {
-  type = string
-  default = null
 }
 
 variable "storage_size" {
