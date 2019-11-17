@@ -4,6 +4,16 @@ variable "cert_validity_period_hours" {
 }
 
 variable "private_key_algorithm" {
-  type        = string
-  default     = "ECDSA"
+  type = string
+  default = "ECDSA"
+}
+
+variable "ecdsa_curve" {
+  type = string
+  default = null
+}
+
+variable "rsa_bits" {
+  type = number
+  default = null
 }
