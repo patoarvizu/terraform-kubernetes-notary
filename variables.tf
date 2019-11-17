@@ -20,7 +20,7 @@ variable "server_cert_pem" {
   type = string
 }
 
-variable "server_cert_key" {
+variable "encrypted_server_cert_key" {
   type = string
 }
 
@@ -28,7 +28,7 @@ variable "signer_cert_pem" {
   type = string
 }
 
-variable "signer_cert_key" {
+variable "encrypted_signer_cert_key" {
   type = string
 }
 

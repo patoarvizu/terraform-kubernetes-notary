@@ -4,7 +4,7 @@ resource "kubernetes_secret" "server_password" {
     namespace = var.namespace
   }
   data = {
-    password = data.aws_kms_secrets.secrets.plaintext["server_db_password"]
+    password = data.aws_kms_secrets.passwords.plaintext["server_db_password"]
   }
 }
 
@@ -14,7 +14,7 @@ resource "kubernetes_secret" "signer_password" {
     namespace = var.namespace
   }
   data = {
-    password = data.aws_kms_secrets.secrets.plaintext["signer_db_password"]
+    password = data.aws_kms_secrets.passwords.plaintext["signer_db_password"]
   }
 }
 
@@ -24,7 +24,7 @@ resource "kubernetes_secret" "signer_alias" {
     namespace = var.namespace
   }
   data = {
-    alias-secret = data.aws_kms_secrets.secrets.plaintext["signer_alias_passphrase"]
+    alias-secret = data.aws_kms_secrets.passwords.plaintext["signer_alias_passphrase"]
   }
 }
 
@@ -36,8 +36,8 @@ resource "kubernetes_secret" "notary_tls" {
   data = {
     "root-ca.crt" = var.ca_cert_pem
     "notary-server.crt" = var.server_cert_pem
-    "notary-server.key" = var.server_cert_key
+    "notary-server.key" = data.aws_kms_secrets.tls.plaintext["server_cert_key"]
     "notary-signer.crt" = var.signer_cert_pem
-    "notary-signer.key" = var.signer_cert_key
+    "notary-signer.key" = data.aws_kms_secrets.tls.plaintext["signer_cert_key"]
   }
 }

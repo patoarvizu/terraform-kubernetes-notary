@@ -9,3 +9,7 @@ variable "encrypted_signer_db_password" {
 variable "encrypted_signer_alias_passphrase" {
   type = string
 }
+
+variable "alias_name" {
+  type = string
+}
