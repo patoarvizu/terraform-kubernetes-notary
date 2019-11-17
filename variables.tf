@@ -1,3 +1,19 @@
+# --- Required
+
+variable "encrypted_server_db_password" {
+  type = string
+}
+
+variable "encrypted_signer_db_password" {
+  type = string
+}
+
+variable "encrypted_signer_alias_passphrase" {
+  type = string
+}
+
+# --- Optional
+
 variable "namespace" {
   type = string
   default = "default"
@@ -61,10 +77,6 @@ variable "server_storage_db_url" {
 variable "server_replicas" {
   type = number
   default = 3
-}
-
-variable "encrypted_server_db_password" {
-  type = string
 }
 
 variable "server_image_version" {
@@ -135,15 +147,7 @@ variable "signer_replicas" {
   default = 3
 }
 
-variable "encrypted_signer_db_password" {
-  type = string
-}
-
 variable "signer_image_version" {
   type = string
   default = "signer-0.6.1-2"
-}
-
-variable "encrypted_signer_alias_passphrase" {
-  type = string
 }
