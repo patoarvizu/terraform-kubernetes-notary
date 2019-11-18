@@ -22,3 +22,7 @@ variable "ca_cert_key" {
   type = string
   default = null
 }
+
+variable "alias_name" {
+  type = string
+}
