@@ -12,4 +12,6 @@ module "notary" {
   storage_image = var.storage_image
   server_storage_db_url = var.server_storage_db_url
   signer_storage_db_url = var.signer_storage_db_url
+  deploy_persistence = var.deploy_persistence
+  run_migration_jobs = var.run_migration_jobs
 }

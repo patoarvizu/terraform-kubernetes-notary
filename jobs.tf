@@ -1,4 +1,5 @@
 resource "kubernetes_job" "notary_server_migrate" {
+  for_each = var.run_migration_jobs == true ? {migrate: true} : {}
   metadata {
     name = "notary-server-migrate"
     namespace = var.namespace
@@ -68,7 +69,7 @@ resource "kubernetes_job" "notary_server_migrate" {
         volume {
           name = "migrations-server"
           config_map {
-            name = kubernetes_config_map.notary_migrations_server.metadata.0.name
+            name = kubernetes_config_map.notary_migrations_server[each.key].metadata.0.name
           }
         }
         volume {
@@ -89,6 +90,7 @@ resource "kubernetes_job" "notary_server_migrate" {
 }
 
 resource "kubernetes_job" "notary_signer_migrate" {
+  for_each = var.run_migration_jobs == true ? {migrate: true} : {}
   metadata {
     name = "notary-signer-migrate"
     namespace = var.namespace
@@ -158,7 +160,7 @@ resource "kubernetes_job" "notary_signer_migrate" {
         volume {
           name = "migrations-signer"
           config_map {
-            name = kubernetes_config_map.notary_migrations_signer.metadata.0.name
+            name = kubernetes_config_map.notary_migrations_signer[each.key].metadata.0.name
           }
         }
         volume {

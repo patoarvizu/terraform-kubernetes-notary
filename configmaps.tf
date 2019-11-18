@@ -1,4 +1,5 @@
 resource "kubernetes_config_map" "notarysql" {
+  for_each = var.deploy_persistence == true ? {create: true} : {}
   metadata {
     name = "notarysql"
     namespace = var.namespace
@@ -10,6 +11,7 @@ resource "kubernetes_config_map" "notarysql" {
 }
 
 resource "kubernetes_config_map" "notary_migrations_server" {
+  for_each = var.run_migration_jobs == true ? {migrate: true} : {}
   metadata {
     name = "notary-migrations-server"
     namespace = var.namespace
@@ -21,6 +23,7 @@ resource "kubernetes_config_map" "notary_migrations_server" {
 }
 
 resource "kubernetes_config_map" "notary_migrations_signer" {
+  for_each = var.run_migration_jobs == true ? {migrate: true} : {}
   metadata {
     name = "notary-migrations-signer"
     namespace = var.namespace
@@ -44,7 +47,7 @@ resource "kubernetes_config_map" "notary_config" {
       server_trust_port = var.server_trust_port,
       logging_level = var.logging_level,
       storage_flavor = var.storage_flavor,
-      server_storage_db_url = "${var.storage_flavor}://${var.server_storage_db_url}",
+      server_storage_db_url = "${var.server_storage_db_url}",
       authentication_enabled = var.authentication_enabled,
       authentication_type = var.authentication_type,
       authentication_options = var.authentication_options,
@@ -57,7 +60,7 @@ resource "kubernetes_config_map" "notary_config" {
       signer_port = var.signer_port,
       logging_level = var.logging_level,
       storage_flavor = var.storage_flavor,
-      signer_storage_db_url = "${var.storage_flavor}://${var.signer_storage_db_url}"
+      signer_storage_db_url = "${var.signer_storage_db_url}"
       signer_default_alias = var.signer_default_alias,
     })
   }

@@ -51,6 +51,11 @@ variable "deploy_persistence" {
   default = true
 }
 
+variable "run_migration_jobs" {
+  type = bool
+  default = true
+}
+
 variable "storage_flavor" {
   type = string
   default = "mysql"

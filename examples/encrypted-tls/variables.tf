@@ -49,3 +49,13 @@ variable "server_storage_db_url" {
 variable "signer_storage_db_url" {
   type = string
 }
+
+variable "deploy_persistence" {
+  type = bool
+  default = true
+}
+
+variable "run_migration_jobs" {
+  type = string
+  default = true
+}

@@ -138,7 +138,6 @@ resource "kubernetes_deployment" "notary_db" {
 }
 
 resource "kubernetes_deployment" "notary_server" {
-  depends_on = ["kubernetes_job.notary_server_migrate"]
   metadata {
     name = "notary-server"
     namespace = var.namespace
@@ -240,7 +239,6 @@ resource "kubernetes_deployment" "notary_server" {
 }
 
 resource "kubernetes_deployment" "notary_signer" {
-  depends_on = ["kubernetes_job.notary_signer_migrate"]
   metadata {
     name = "notary-signer"
     namespace = var.namespace
