@@ -65,23 +65,45 @@ resource "kubernetes_deployment" "notary_db" {
           }
         }
         container {
-          args = [
-            "mysqld",
-            "--innodb_file_per_table",
-          ]
-          env {
-            name = "MYSQL_RANDOM_ROOT_PASSWORD"
-            value = "yes"
+          args = flatten([
+            for f in local.db_container_args:
+            f.args
+            if f.flavor == var.storage_flavor
+            ])
+          dynamic "env" {
+            for_each = [for e in local.db_environment_variables: {
+              name = e.name
+              value = e.value
+            } if e.flavor == var.storage_flavor ]
+
+            content {
+              name = env.value.name
+              value = env.value.value
+            }
           }
           image = var.storage_image
           name = "storage"
-          port {
-            container_port = 3306
-            name = "mysql"
+          dynamic "port" {
+            for_each = [for p in local.db_ports: {
+              port = p.port
+              name = p.name
+            } if p.flavor == var.storage_flavor ]
+
+            content {
+              container_port = port.value.port
+              name = port.value.name
+            }
           }
-          volume_mount {
-            mount_path = "/var/lib/mysql"
-            name = "notary-data"
+          dynamic "volume_mount" {
+            for_each = [for m in local.db_mounts: {
+              mount_path = m.mount_path
+              name = m.name
+            } if m.flavor == var.storage_flavor ]
+
+            content {
+              mount_path = volume_mount.value.mount_path
+              name = volume_mount.value.name
+            }
           }
           volume_mount {
             mount_path = "/docker-entrypoint-initdb.d"

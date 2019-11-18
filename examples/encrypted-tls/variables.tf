@@ -33,3 +33,19 @@ variable "encrypted_signer_cert_key" {
 variable "alias_name" {
   type = string
 }
+
+variable "storage_flavor" {
+  type = string
+}
+
+variable "storage_image" {
+  type = string
+}
+
+variable "server_storage_db_url" {
+  type = string
+}
+
+variable "signer_storage_db_url" {
+  type = string
+}

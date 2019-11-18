@@ -23,7 +23,7 @@ resource "kubernetes_job" "notary_server_migrate" {
             "--right-delim",
             "%%",
             "--in",
-            var.server_storage_db_url,
+            "${var.storage_flavor}://${var.server_storage_db_url}",
             "--out",
             "/migrate-configuration/db-url",
           ]
@@ -47,7 +47,7 @@ resource "kubernetes_job" "notary_server_migrate" {
           command = [
             "sh",
             "-c",
-            "/migrate -path=/migrations/server/${var.storage_flavor} -database=${var.storage_flavor}://$(cat /migrate-configuration/db-url) up"
+            "/migrate -path=/migrations/server/${var.storage_flavor} -database=$(cat /migrate-configuration/db-url) up"
           ]
           image = "migrate/migrate:${var.migrate_version}"
           name = "migrate"
@@ -113,7 +113,7 @@ resource "kubernetes_job" "notary_signer_migrate" {
             "--right-delim",
             "%%",
             "--in",
-            var.signer_storage_db_url,
+            "${var.storage_flavor}://${var.signer_storage_db_url}",
             "--out",
             "/migrate-configuration/db-url",
           ]
@@ -137,7 +137,7 @@ resource "kubernetes_job" "notary_signer_migrate" {
           command = [
             "sh",
             "-c",
-            "/migrate -path=/migrations/signer/${var.storage_flavor} -database=${var.storage_flavor}://$(cat /migrate-configuration/db-url) up"
+            "/migrate -path=/migrations/signer/${var.storage_flavor} -database=$(cat /migrate-configuration/db-url) up"
           ]
           image = "migrate/migrate:${var.migrate_version}"
           name = "migrate"

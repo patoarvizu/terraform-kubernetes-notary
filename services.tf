@@ -5,10 +5,17 @@ resource "kubernetes_service" "notary_db" {
     namespace = var.namespace
   }
   spec {
-    port {
-      name = "mysql"
-      port = 3306
-      target_port = 3306
+    dynamic "port" {
+      for_each = [for p in local.db_ports: {
+          port = p.port
+          name = p.name
+      } if p.flavor == var.storage_flavor ]
+
+      content {
+        name = port.value.name
+        port = port.value.port
+        target_port = port.value.name
+      }
     }
     selector = {
       app = "notary"
