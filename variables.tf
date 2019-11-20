@@ -39,6 +39,16 @@ variable "storage_class_name" {
   default = null
 }
 
+variable "ingress_tls_hosts" {
+  type = list
+  default = null
+}
+
+variable "ingress_tls_secret_name" {
+  type = string
+  default = null
+}
+
 # --- Optional
 
 variable "namespace" {
@@ -177,4 +187,19 @@ variable "signer_replicas" {
 variable "signer_image_version" {
   type = string
   default = "signer-0.6.1-2"
+}
+
+variable "ingress_hosts" {
+  type = list
+  default = []
+}
+
+variable "ingress_path" {
+  type = string
+  default = "/"
+}
+
+variable "ingress_annotations" {
+  type = map
+  default = {}
 }
