@@ -41,3 +41,21 @@ resource "kubernetes_service" "notary_signer" {
     }
   }
 }
+
+resource "kubernetes_service" "notary_server" {
+  metadata {
+    name = "notary-server"
+    namespace = var.namespace
+  }
+  spec {
+    port {
+      name = "https"
+      port = var.server_port
+      target_port = var.server_port
+    }
+    selector = {
+      app = "notary"
+      component = "notary-server"
+    }
+  }
+}
