@@ -23,6 +23,6 @@ variable "ca_cert_key" {
   default = null
 }
 
-variable "alias_name" {
+variable "kms_alias_name" {
   type = string
 }
