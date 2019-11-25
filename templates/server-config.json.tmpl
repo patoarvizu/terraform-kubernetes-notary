@@ -1,0 +1,42 @@
+{
+  "server": {
+    "http_addr": ":${server_port}",
+    "tls_key_file": "/tls/notary-server.key",
+    "tls_cert_file": "/tls/notary-server.crt"
+  },
+  "trust_service": {
+    "type": "${server_trust_type}",
+    "hostname": "${server_trust_hostname}",
+    "port": "${server_trust_port}",
+    "tls_ca_file": "/tls/root-ca.crt",
+    "key_algorithm": "ecdsa",
+    "tls_client_cert": "/tls/notary-server.crt",
+    "tls_client_key": "/tls/notary-server.key"
+  },
+  "logging": {
+    "level": "${logging_level}"
+  },
+  "storage": {
+    "backend": "${storage_flavor}",
+    "db_url": "${server_storage_db_url}"
+  },
+  %{if authentication_enabled ~}
+  "authentication": {
+    "type": "${authentication_type}",
+    "options": {
+        "realm": "${authentication_options.realm}"
+    }
+  },
+  %{endif ~}
+  %{if caching_enabled ~}
+  "caching": {
+    "max_age": {
+      "current_metadata": "${caching_current_metadata}",
+      "consistent_metadata": "${caching_consistent_metadata}"
+    }
+  },
+  %{endif ~}
+  "repositories": {
+    "gun_prefixes": ["${gun_prefixes}"]
+  }
+}
