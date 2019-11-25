@@ -1,5 +1,22 @@
 # Terraform Kubernetes Notary module
 
+![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/patoarvizu/terraform-kubernetes-notary.svg) ![Keybase BTC](https://img.shields.io/keybase/btc/patoarvizu.svg) ![Keybase PGP](https://img.shields.io/keybase/pgp/patoarvizu.svg) ![GitHub](https://img.shields.io/github/license/patoarvizu/terraform-kubernetes-notary.svg)
+
+<!-- TOC -->
+
+- [Terraform Kubernetes Notary module](#terraform-kubernetes-notary-module)
+    - [Intro](#intro)
+    - [Features](#features)
+    - [Terraform versions](#terraform-versions)
+    - [Examples](#examples)
+        - [Create KMS Key](#create-kms-key)
+        - [Encrypt passwords, passphrase and certificates.](#encrypt-passwords-passphrase-and-certificates)
+        - [Run Notary](#run-notary)
+        - [Inputs](#inputs)
+        - [Outputs](#outputs)
+
+<!-- /TOC -->
+
 ## Intro
 
 [Notary](https://github.com/theupdateframework/notary) is an implementation of [The Update Framework specification](https://github.com/theupdateframework/specification). This module assumes you're already familiar with Notary and its concepts, but if you want to learn about it, you can find good information on the links before or in YouTube videos like [this one](https://www.youtube.com/watch?v=gIFRQObHbZk) or [this one](https://www.youtube.com/watch?v=76S7ZAwM0h4).
