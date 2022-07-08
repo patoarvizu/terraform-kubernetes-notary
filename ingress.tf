@@ -12,7 +12,7 @@ resource "kubernetes_ingress" "ingress" {
       }]
 
       content {
-        host = rule.host
+        host = rule.value.host
         http {
           path {
             path = var.ingress_path
