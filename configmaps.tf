@@ -54,7 +54,7 @@ resource "kubernetes_config_map" "notary_config" {
       caching_enabled = var.caching_enabled,
       caching_current_metadata = var.caching_current_metadata,
       caching_consistent_metadata = var.caching_consistent_metadata,
-      gun_prefixes = join(",", var.gun_prefixes),
+      gun_prefixes = jsonencode(var.gun_prefixes),
     })
     "signer-config.json" = templatefile("${path.module}/templates/signer-config.json.tmpl", {
       signer_port = var.signer_port,
