@@ -24,9 +24,12 @@ resource "kubernetes_ingress" "ingress" {
         }
       }
     }
-    tls {
-      hosts = var.ingress_tls_hosts
-      secret_name = var.ingress_tls_secret_name
+    dynamic "tls" {
+      for_each = var.ingress_tls_hosts
+      content {
+        hosts = var.ingress_tls_hosts
+        secret_name = var.ingress_tls_secret_name
+      }
     }
   }
 }
