@@ -25,7 +25,7 @@ resource "kubernetes_ingress" "ingress" {
       }
     }
     dynamic "tls" {
-      for_each = var.ingress_tls_hosts
+      for_each = var.ingress_tls_hosts == null ? [] : var.ingress_tls_hosts
       content {
         hosts = var.ingress_tls_hosts
         secret_name = var.ingress_tls_secret_name
