@@ -3,6 +3,7 @@ resource "kubernetes_deployment" "notary_db" {
   metadata {
     name = "notary-db"
     namespace = var.namespace
+    annotations = var.deployment_annotations_db
   }
   spec {
     replicas = 1
@@ -21,6 +22,7 @@ resource "kubernetes_deployment" "notary_db" {
           app = "notary"
           component = "notary-db"
         }
+        annotations = var.pod_annotations_db
       }
       spec {
         init_container {
@@ -141,6 +143,7 @@ resource "kubernetes_deployment" "notary_server" {
   metadata {
     name = "notary-server"
     namespace = var.namespace
+    annotations = var.deployment_annotations_server
   }
   spec {
     replicas = var.server_replicas
@@ -161,6 +164,7 @@ resource "kubernetes_deployment" "notary_server" {
           app = "notary"
           component = "notary-server"
         }
+        annotations = var.pod_annotations_server
       }
       spec {
         init_container {
@@ -242,6 +246,7 @@ resource "kubernetes_deployment" "notary_signer" {
   metadata {
     name = "notary-signer"
     namespace = var.namespace
+    annotations = var.deployment_annotations_signer
   }
   spec {
     replicas = var.signer_replicas
@@ -262,6 +267,7 @@ resource "kubernetes_deployment" "notary_signer" {
           app = "notary"
           component = "notary-signer"
         }
+        annotations = var.pod_annotations_signer
       }
       spec {
         init_container {

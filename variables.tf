@@ -244,3 +244,39 @@ variable "ingress_annotations" {
   default = {}
   description = "A map of annotations to be added to the ingress."
 }
+
+variable "deployment_annotations_signer" {
+  type = map
+  default = {}
+  description = "A map of annotations to be added to the notary-signer deployment."
+}
+
+variable "deployment_annotations_server" {
+  type = map
+  default = {}
+  description = "A map of annotations to be added to the notary-server deployment."
+}
+
+variable "deployment_annotations_db" {
+  type = map
+  default = {}
+  description = "A map of annotations to be added to the notary-db deployment."
+}
+
+variable "pod_annotations_signer" {
+  type = map
+  default = {}
+  description = "A map of annotations to be added to the notary-signer pods."
+}
+
+variable "pod_annotations_server" {
+  type = map
+  default = {}
+  description = "A map of annotations to be added to the notary-server pods."
+}
+
+variable "pod_annotations_db" {
+  type = map
+  default = {}
+  description = "A map of annotations to be added to the notary-db pods."
+}
