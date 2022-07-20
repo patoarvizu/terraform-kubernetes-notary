@@ -4,7 +4,7 @@ resource "tls_cert_request" "server" {
   subject {
     common_name = "notary-server"
   }
-  dns_names = concat(["notary-server"], var.subject_alternative_names_server)
+  dns_names = ["notary-server"]
 }
 
 resource "tls_cert_request" "signer" {
@@ -13,5 +13,5 @@ resource "tls_cert_request" "signer" {
   subject {
     common_name = "notary-signer"
   }
-  dns_names = concat(["notary-signer"], var.subject_alternative_names_signer)
+  dns_names = ["notary-signer"]
 }

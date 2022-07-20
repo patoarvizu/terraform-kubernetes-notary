@@ -26,13 +26,3 @@ variable "ca_cert_key" {
 variable "kms_alias_name" {
   type = string
 }
-
-variable "subject_alternative_names_server" {
-  type = list
-  default = []
-}
-
-variable "subject_alternative_names_signer" {
-  type = list
-  default = []
-}
