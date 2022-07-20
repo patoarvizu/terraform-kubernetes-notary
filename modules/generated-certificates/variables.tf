@@ -30,11 +30,9 @@ variable "kms_alias_name" {
 variable "subject_alternative_names_server" {
   type = list
   default = []
-  description = "List of subject alternative names for the server certificate."
 }
 
 variable "subject_alternative_names_signer" {
   type = list
   default = []
-  description = "List of subject alternative names for the signer certificate."
 }
