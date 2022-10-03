@@ -1,4 +1,4 @@
-resource "kubernetes_ingress" "ingress" {
+resource "kubernetes_ingress_v1" "ingress" {
   for_each = length(var.ingress_hosts) > 0 ? {ingress: true} : {}
   metadata {
     name = "notary-ingress"
