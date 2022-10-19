@@ -30,6 +30,7 @@ resource "kubernetes_service" "notary_signer" {
     namespace = var.namespace
   }
   spec {
+    type = var.service_type
     port {
       name = "https"
       port = var.signer_port
@@ -48,6 +49,7 @@ resource "kubernetes_service" "notary_server" {
     namespace = var.namespace
   }
   spec {
+    type = var.service_type
     port {
       name = "https"
       port = var.server_port

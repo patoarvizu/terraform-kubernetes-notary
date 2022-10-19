@@ -84,6 +84,7 @@ storage_class_name | null | The Kubernetes storage class name to use on Persiste
 ingress_tls_hosts | null | The list of hosts to be added in the tls map of the ingress.
 ingress_tls_secret_name | null | The name of the secret that has the certificates valid for the hosts in the `ingress_tls_hosts` variable.
 namespace | `default` | The namespace to deploy the resources into.
+service_type | `ClusterIP` | Determines how the service is exposed.
 deploy_persistence | `true` | Boolean to indicate if this module should deploy the persistence layer. Set to `false` if storage has been provisioned externally.
 run_migration_jobs | `true` | Boolean to indicate if the initial migration jobs need to be run. Set to `false` if storage has been initialized externally.
 storage_flavor | `mysql` | The 'flavor' of storage. The chart currently only supports `mysql` and `postgres`.

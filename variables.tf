@@ -68,6 +68,12 @@ variable "namespace" {
   description = "The namespace to deploy the resources into."
 }
 
+variable "service_type" {
+  type = string
+  default = "ClusterIP"
+  description = "Determines how the service is exposed."
+}
+
 variable "deploy_persistence" {
   type = bool
   default = true
