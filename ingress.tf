@@ -1,4 +1,4 @@
-resource "kubernetes_ingress" "ingress" {
+resource "kubernetes_ingress_v1" "ingress" {
   for_each = length(var.ingress_hosts) > 0 ? {ingress: true} : {}
   metadata {
     name = "notary-ingress"
@@ -17,8 +17,12 @@ resource "kubernetes_ingress" "ingress" {
           path {
             path = var.ingress_path
             backend {
-              service_name = kubernetes_service.notary_server.metadata.0.name
-              service_port = var.server_port
+              service {
+                name = kubernetes_service.notary_server.metadata.0.name
+                port {
+                  number = var.server_port
+                }
+              }
             }
           }
         }
